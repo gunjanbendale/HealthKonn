@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/backg1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/design_default_color_primary_dark"
+        app:titleTextColor="#fff"
+        app:title="Book An Appointment"
+        app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/patient"
+            android:hint="Patient's Name"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:background="@drawable/round1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/age"
+            android:hint="Age "
+            android:inputType="text"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:background="@drawable/round1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/city"
+            android:hint="City"
+            android:layout_marginTop="10dp"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:background="@drawable/round1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/hospital"
+            android:hint="Hospital"
+            android:layout_marginTop="10dp"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:background="@drawable/round1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/drname"
+            android:hint="Dr. Name "
+            android:layout_marginTop="10dp"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:background="@drawable/round1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/apptdate"
+            android:hint="Appointment Date"
+            android:layout_marginTop="10dp"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:background="@drawable/round1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+            />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/appttime"
+            android:hint="Appointment Time"
+            android:layout_marginTop="10dp"
+            android:inputType="text"
+            android:padding="10dp"
+            android:textSize="20sp"
+            android:background="@drawable/round1"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/submit"
+            android:background="#35b24a"
+            android:text="Submit"
+            android:textColor="#FFF"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"/>
+    </LinearLayout>
+
+</LinearLayout>
