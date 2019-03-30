@@ -22,8 +22,19 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:id="@+id/bloodgrp"
+            android:id="@+id/name"
             android:layout_marginTop="50dp"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="Enter your Name"
+            android:background="@drawable/round1"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/bloodgrp"
+            android:layout_marginTop="10dp"
             android:textSize="20sp"
             android:padding="10dp"
             android:layout_marginLeft="10dp"
@@ -51,6 +62,28 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:hint="Health Conditions, if any"
+            android:background="@drawable/round1"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/weight"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="Enter your weight"
+            android:background="@drawable/round1"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:id="@+id/height"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="Enter your Height"
             android:background="@drawable/round1"/>
         <EditText
             android:layout_width="match_parent"

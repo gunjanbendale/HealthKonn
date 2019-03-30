@@ -1,8 +1,10 @@
 package com.healthkonn.healthkonnect;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -40,6 +42,45 @@ public class Dashboard extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        CardView book_appt = (CardView) findViewById(R.id.bookappt);
+        CardView medic_history = (CardView) findViewById(R.id.medihist);
+        CardView bloodbanksearch = (CardView) findViewById(R.id.bbs);
+        CardView donateblood = (CardView) findViewById(R.id.donablood);
+
+        book_appt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              Intent i =new Intent(Dashboard.this,BookAnAppointment.class);
+              finish();
+              startActivity(i);
+            }
+        });
+        medic_history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(Dashboard.this,MedicalHistory.class);
+                finish();
+                startActivity(i);
+            }
+        });
+        bloodbanksearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(Dashboard.this,BloodBankSearch.class);
+                finish();
+                startActivity(i);
+            }
+        });
+        donateblood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i =new Intent(Dashboard.this,Donate.class);
+                finish();
+                startActivity(i);
+            }
+        });
+
 
     }
 
