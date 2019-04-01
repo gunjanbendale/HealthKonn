@@ -10,32 +10,41 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class Donate extends AppCompatActivity {
-
+    EditText name,bloodgrp,lastdon,healthcond,age,weight,height,city,area;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donate);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        EditText name = (EditText) findViewById(R.id.name);
-        EditText bloodgrp = (EditText) findViewById(R.id.bloodgrp);
-        EditText lastdon = (EditText) findViewById(R.id.lastdon);
-        EditText heatlhcond = (EditText) findViewById(R.id.healthcond);
-        EditText age = (EditText) findViewById(R.id.age);
-        EditText weight = (EditText) findViewById(R.id.weight);
-        EditText height = (EditText) findViewById(R.id.height);
-        EditText city = (EditText) findViewById(R.id.city);
-        EditText area = (EditText) findViewById(R.id.area);
+        name = (EditText) findViewById(R.id.name);
+        bloodgrp = (EditText) findViewById(R.id.bloodgrp);
+        lastdon = (EditText) findViewById(R.id.lastdon);
+        healthcond = (EditText) findViewById(R.id.healthcond);
+        age = (EditText) findViewById(R.id.age);
+        weight = (EditText) findViewById(R.id.weight);
+        height = (EditText) findViewById(R.id.height);
+        city = (EditText) findViewById(R.id.city);
+        area = (EditText) findViewById(R.id.area);
 
         Button submit = (Button) findViewById(R.id.submit);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                submitreq();
             }
         });
 
     }
+
+    private void submitreq(){
+
+    }
+
+    private void submitdata(){
+
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

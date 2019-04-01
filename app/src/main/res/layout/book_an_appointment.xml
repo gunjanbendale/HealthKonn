@@ -11,8 +11,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/design_default_color_primary_dark"
         app:titleTextColor="#fff"
-        app:title="Book An Appointment"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        app:title="Book An Appointment" />
 
         <LinearLayout
             android:layout_width="match_parent"

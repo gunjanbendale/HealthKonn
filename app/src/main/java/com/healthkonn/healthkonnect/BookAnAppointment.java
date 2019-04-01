@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,28 +13,50 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.healthkonn.healthkonnect.model.Result;
+import com.healthkonn.healthkonnect.network.RetrofitInterface;
+import com.healthkonn.healthkonnect.utils.Constants;
 
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class BookAnAppointment extends AppCompatActivity {
 
     DatePickerDialog datePickerDialog;
     TimePickerDialog timePickerDialog;
     Button submit;
+    EditText patient,age,city,hospital,drname;
+    EditText date;
+    EditText time;
+    Result result;
+
+    private static Retrofit.Builder builder=new Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(GsonConverterFactory.create());
+    public static Retrofit retrofit=builder.build();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_an_appointment);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        EditText patient = (EditText) findViewById(R.id.patient);
-        EditText age = (EditText) findViewById(R.id.age);
-        EditText city = (EditText) findViewById(R.id.city);
-        EditText hospital = (EditText) findViewById(R.id.hospital);
-        EditText drname = (EditText) findViewById(R.id.drname);
+        patient = (EditText) findViewById(R.id.patient);
+        age = (EditText) findViewById(R.id.age);
+        city = (EditText) findViewById(R.id.city);
+        hospital = (EditText) findViewById(R.id.hospital);
+        drname = (EditText) findViewById(R.id.drname);
 
-        final EditText date = (EditText) findViewById(R.id.apptdate);
-        final EditText time = (EditText) findViewById(R.id.appttime);
+        date = (EditText) findViewById(R.id.apptdate);
+        time = (EditText) findViewById(R.id.appttime);
         datePickerDialog = new DatePickerDialog(this);
         submit = (Button) findViewById(R.id.submit);
 
@@ -82,12 +105,80 @@ public class BookAnAppointment extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                submitreq();
             }
         });
 
     }
 
+    private void submitreq(){
+        String name_user = patient.getText().toString();
+        String agep = age.getText().toString();
+        String cityp = city.getText().toString();
+        String hospitalp = hospital.getText().toString();
+        String drnamep = drname.getText().toString();
+        String datep = date.getText().toString();
+        String timep = time.getText().toString();
+        if(name_user.isEmpty()){
+            patient.setError("Name is Required");
+            patient.requestFocus();
+        }
+        if (agep.isEmpty()){
+            age.setError("Age is required");
+            age.requestFocus();
+        }
+        if (cityp.isEmpty()){
+            city.setError("City require");
+            city.requestFocus();
+        }
+        if (hospitalp.isEmpty()){
+            hospital.setError("Hospital Name required");
+            hospital.requestFocus();
+        }
+        if (drnamep.isEmpty()){
+            drname.setError("Drname Is Required");
+            drname.requestFocus();
+        }
+        if (datep.isEmpty()){
+            date.setError("Date required");
+            date.requestFocus();
+        }
+        if (timep.isEmpty()){
+            time.setError("Time required");
+            time.requestFocus();
+        }
+        submitdata(name_user,agep,hospitalp,drnamep,cityp,datep,timep);
+    }
+
+    private void submitdata(String n,String a,String h,String d,String c,String da,String ti){
+        RetrofitInterface retrofitInterface = retrofit.create(RetrofitInterface.class);
+        Map<String,String> map = new HashMap<>();
+        map.put("patname",n);
+        map.put("age",a);
+        map.put("city",c);
+        map.put("Hospital",h);
+        map.put("docname",d);
+        map.put("apptDate",da);
+        map.put("apptTime",ti);
+        map.put("dateCurr",Calendar.getInstance().getTime().toString());
+        Call<Result> call=retrofitInterface.bookappt(map);
+
+        call.enqueue(new Callback<Result>() {
+            @Override
+            public void onResponse(Call<Result> call, Response<Result> response) {
+                result=response.body();
+                Toast.makeText(BookAnAppointment.this,new Gson().toJson(result.getMessage()),Toast.LENGTH_LONG).show();
+                finish();
+                startActivity(new Intent(BookAnAppointment.this,Dashboard.class));
+                Toast.makeText(BookAnAppointment.this,"Enter mob and password",Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onFailure(Call<Result> call, Throwable t) {
+                Toast.makeText(BookAnAppointment.this,t.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
