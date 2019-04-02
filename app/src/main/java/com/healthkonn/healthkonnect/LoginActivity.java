@@ -41,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView signUp;
     private TextView forgotpass;
     SessionManagement sessionManagement;
-
+    String token;
     public static final String TAG = LoginActivity.class.getSimpleName();
     private String mob,pass,id;
     Result result;
@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
                         progressDialog.cancel();
                         Log.e("TAG", "response 33: " + new Gson().toJson(response.body()));
                         Log.e("TAG", "response 33: " + response.body());
-                        sessionManagement.createLoginSession(mob, pass, id);
+                        sessionManagement.createLoginSession(mob, pass, result.getToken());
                         Intent intent = new Intent(LoginActivity.this, Dashboard.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.putExtra("result", result);

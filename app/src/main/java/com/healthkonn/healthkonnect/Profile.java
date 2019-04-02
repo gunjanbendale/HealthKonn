@@ -7,6 +7,9 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.healthkonn.healthkonnect.model.User;
+
+
 public class Profile extends AppCompatActivity {
     TextView na,ci,db,add,em,ph;
     Intent intent;
@@ -16,25 +19,17 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         intent = getIntent();
-        String name =intent.getStringExtra("name");
-        String city=intent.getStringExtra("city");
-        String dob =intent.getStringExtra("dob");
-        String address = intent.getStringExtra("address");
-        String email = intent.getStringExtra("email");
-        String mob = intent.getStringExtra("contact");
+        User user = intent.getParcelableExtra("user");
         na =(TextView) findViewById(R.id.name);
         ci =(TextView) findViewById(R.id.city);
         db =(TextView) findViewById(R.id.dob);
-        add =(TextView) findViewById(R.id.address);
         em =(TextView) findViewById(R.id.email);
         ph =(TextView) findViewById(R.id.phn);
-        na.append(name);
-        ci.append(city);
-        db.append(dob);
-        add.append(address);
-        em.append(email);
-        ph.append(mob);
-
+        na.append(user.getName());
+        ci.append(user.getCity());
+        db.append(user.getDob());
+        em.append(user.getEmail());
+        ph.append(user.getContact());
     }
 
     @Override

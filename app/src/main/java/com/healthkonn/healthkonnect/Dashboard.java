@@ -1,10 +1,12 @@
 package com.healthkonn.healthkonnect;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,10 +16,32 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.healthkonn.healthkonnect.model.Result;
+import com.healthkonn.healthkonnect.model.User;
+import com.healthkonn.healthkonnect.network.RetrofitInterface;
+import com.healthkonn.healthkonnect.utils.Constants;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Dashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    Result result;
+    Context context;
+    Gson gson = new GsonBuilder().setLenient().create();
 
+    OkHttpClient client = new OkHttpClient();
+    Retrofit.Builder builder=new Retrofit.Builder().baseUrl(Constants.BASE_URL).client(client).addConverterFactory(GsonConverterFactory.create(gson));
+    Retrofit retrofit=builder.build();
+    RetrofitInterface retrofitInterface=retrofit.create(RetrofitInterface.class);
         Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,10 +164,27 @@ public class Dashboard extends AppCompatActivity
         }
         */
         if ( id == R.id.profile){
-            Intent i =new Intent(Dashboard.this,Profile.class);
-            //i.putExtra("Profile",)
-            finish();
-            startActivity(i);
+            String _id = intent.getStringExtra("id");
+            Call<Result>  call= retrofitInterface.profile(_id);
+            call.enqueue(new Callback<Result>() {
+                @Override
+                public void onResponse(Call<Result> call, Response<Result> response) {
+                    result = response.body();
+                    Log.e("result", String.valueOf(response.body()));
+                    User user = result.getUser();
+                    Intent i =new Intent(Dashboard.this,Profile.class);
+                    i.putExtra("user",user);
+                    finish();
+                    startActivity(i);
+                }
+
+                @Override
+                public void onFailure(Call<Result> call, Throwable t) {
+                    Log.e("error",t.getMessage());
+                    Toast.makeText(Dashboard.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

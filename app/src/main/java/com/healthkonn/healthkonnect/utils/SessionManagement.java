@@ -20,102 +20,133 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 public class SessionManagement {
-    //Shared Preference for session
-    SharedPreferences sharedPreferences;
+    // Shared Preferences
+    SharedPreferences pref;
 
-    // Editor for shared preferences
+    // Editor for Shared preferences
     SharedPreferences.Editor editor;
 
-    //Context
-    Context context;
+    // Context
+    Context _context;
 
-    int PRIVATE_MODE=0;
-    Gson gson = new GsonBuilder().setLenient().create();
+    // Shared pref mode
+    int PRIVATE_MODE = 0;
 
-    OkHttpClient client = new OkHttpClient();
-    Retrofit.Builder builder=new Retrofit.Builder().baseUrl(Constants.BASE_URL).client(client).addConverterFactory(GsonConverterFactory.create(gson));
-    Retrofit retrofit=builder.build();
-    RetrofitInterface retrofitInterface=retrofit.create(RetrofitInterface.class);
+    // Sharedpref file name
+    private static final String PREF_NAME = "Login";
+
+    // All Shared Preferences Keys
+    private static final String IS_LOGIN = "IsLoggedIn";
 
 
-    public static final String PREF_NAME = "Login";
-
-    public static final String IS_LOGIN = "IsLoggedIn";
-
-    public static final String KEY_MOB = "mobile";
+    public static final String KEY_EMAIL = "email";
 
     public static final String KEY_PASS = "password";
 
-    public static final String KEY_ID = "id";
-
+    public static final String KEY_TOKEN ="token";
+    public static final String FIREBASE_KEY_TOKEN ="firebasetoken";
+    // Constructor
     public SessionManagement(Context context){
-        this.context= context;
-        sharedPreferences = context.getSharedPreferences(PREF_NAME,PRIVATE_MODE);
-        editor=sharedPreferences.edit();
-
+        this._context = context;
+        pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+        editor = pref.edit();
     }
+    /**
+     * Create login session
+     * */
+    public void createLoginSession(String email,String pass,String token){
+        // Storing login value as TRUE
+        editor.putBoolean(IS_LOGIN, true);
 
-    public void createLoginSession(String mobile, String password,String id){
-        editor.putBoolean(IS_LOGIN,true);
 
-        editor.putString(KEY_MOB,mobile);
 
-        editor.putString(KEY_PASS,password);
+        // Storing email in pref
+        editor.putString(KEY_EMAIL, email);
 
-        editor.putString(KEY_ID,id);
+        // Storing name in pref
+        editor.putString(KEY_PASS, pass);
+
+        editor.putString(KEY_TOKEN,token);
+
+        // commit changes
         editor.commit();
-
     }
-
+    public void addfirebasetoken(String token)
+    {
+        editor.putString(FIREBASE_KEY_TOKEN,token);
+        editor.commit();
+    }
+    /**
+     * Check login method wil check user login status
+     * If false it will redirect user to login page
+     * Else won't do anything
+     * */
     public void checkLogin(Activity activity){
+        // Check login status
         if(!this.isLoggedIn()){
-            Intent intent = new Intent(context, LoginActivity.class);
+            // user is not logged in redirect him to Login Activity
+            Intent i = new Intent(_context, LoginActivity.class);
+            // Closing all the Activities
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            // Add new Flag to start new Activity
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            context.startActivity(intent);
+            // Staring Login Activity
+            _context.startActivity(i);
             activity.finish();
 
         }
+
     }
 
+
+
+    /**
+     * Get stored session data
+     * */
     public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
         // user name
-        user.put(KEY_ID,sharedPreferences.getString(KEY_ID,null));
 
-        user.put(KEY_MOB, sharedPreferences.getString(KEY_MOB, null));
 
-        user.put(KEY_PASS, sharedPreferences.getString(KEY_PASS, null));
+        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
+
+        user.put(KEY_PASS, pref.getString(KEY_PASS, null));
+
+        user.put(KEY_TOKEN,pref.getString(KEY_TOKEN,null));
         // return user
         return user;
     }
 
+    /**
+     * Clear session details
+     * */
     public void logoutUser(){
+        // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
-        Call<Result> call= (Call<Result>) retrofitInterface.logout();
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                Intent i = new Intent(context, LoginActivity.class);
-                i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | i.FLAG_ACTIVITY_CLEAR_TASK);
-                context.startActivity(i);
-            }
 
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-
-            }
-        });
-
+        // After logout redirect user to Loing Activity
+        /*Intent i = new Intent(_context, LoginActivity.class);
+        // Closing all the Activities
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        // Add new Flag to start new Activity
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // Staring Login Activity
+        _context.startActivity(i);*/
+        Intent i = new Intent(_context, LoginActivity.class);
+        i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | i.FLAG_ACTIVITY_CLEAR_TASK);
+        _context.startActivity(i); // Launch the Homescreen Activity
+        //_finish();
     }
 
+    /**
+     * Quick check for login
+     * **/
+    // Get Login State
     public boolean isLoggedIn(){
-        return sharedPreferences.getBoolean(IS_LOGIN, false);
+        return pref.getBoolean(IS_LOGIN, false);
     }
 }

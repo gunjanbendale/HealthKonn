@@ -52,17 +52,7 @@
                 android:id="@+id/dob"
                 android:text="Date of Birth :"
                 android:textSize="20sp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:textColor="#000"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:id="@+id/address"
-                android:text="Address :"
-                android:textSize="20sp"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

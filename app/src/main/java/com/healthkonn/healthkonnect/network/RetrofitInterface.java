@@ -26,6 +26,9 @@ import retrofit2.http.Url;
 
 public interface RetrofitInterface {
 
+    @GET("/")
+    Call<Result>session_manage(@Header("authorization")String authtoken);
+
     @FormUrlEncoded
     @POST("/login")
     Call<Result> login(@Field("username") String usrname, @Field("password") String password);
@@ -35,8 +38,13 @@ public interface RetrofitInterface {
     Call<Result> signup(@FieldMap Map<String,String> map);
 
     @FormUrlEncoded
+    @POST("/profile")
+    Call<Result> profile(@Field("id") String id);
+
+    @FormUrlEncoded
     @POST("/bookappt")
     Call<Result> bookappt(@FieldMap Map<String,String> map);
+
 
 
     @FormUrlEncoded

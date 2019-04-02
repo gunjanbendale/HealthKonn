@@ -13,9 +13,12 @@ public class Result implements Parcelable
     @SerializedName("message")
     @Expose
     private String message;
-    @SerializedName("status")
+    @SerializedName("id")
     @Expose
-    private String status;
+    private String id;
+    @SerializedName("success")
+    @Expose
+    private Boolean status;
     @SerializedName("token")
     @Expose
     private String token;
@@ -41,7 +44,8 @@ public class Result implements Parcelable
 
     protected Result(Parcel in) {
         this.message = ((String) in.readValue((String.class.getClassLoader())));
-        this.status = ((String) in.readValue((String.class.getClassLoader())));
+        this.id = ((String) in.readValue((String.class.getClassLoader())));
+        this.status = ((Boolean) in.readValue((String.class.getClassLoader())));
         this.token = ((String) in.readValue((String.class.getClassLoader())));
         this.user = ((User) in.readValue((User.class.getClassLoader())));
     }
@@ -57,16 +61,24 @@ public class Result implements Parcelable
         this.message = message;
     }
 
-    public String getStatus() {
+    public Boolean getSuccess() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Boolean status) {
         this.status = status;
     }
 
     public String getToken() {
         return token;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setToken(String token) {
@@ -84,6 +96,7 @@ public class Result implements Parcelable
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(message);
+        dest.writeValue(id);
         dest.writeValue(status);
         dest.writeValue(token);
         dest.writeValue(user);
