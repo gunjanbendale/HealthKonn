@@ -157,10 +157,11 @@ public class BookAnAppointment extends AppCompatActivity {
         map.put("age",a);
         map.put("city",c);
         map.put("Hospital",h);
-        map.put("docname",d);
+        map.put("docName",d);
         map.put("apptDate",da);
         map.put("apptTime",ti);
         map.put("dateCurr",Calendar.getInstance().getTime().toString());
+        map.put("status","Booked");
         Call<Result> call=retrofitInterface.bookappt(map);
 
         call.enqueue(new Callback<Result>() {

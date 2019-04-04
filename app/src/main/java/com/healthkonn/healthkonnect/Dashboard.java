@@ -1,10 +1,12 @@
 package com.healthkonn.healthkonnect;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.healthkonn.healthkonnect.model.Result;
 import com.healthkonn.healthkonnect.model.User;
 import com.healthkonn.healthkonnect.network.RetrofitInterface;
 import com.healthkonn.healthkonnect.utils.Constants;
+import com.healthkonn.healthkonnect.utils.SessionManagement;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -42,7 +45,10 @@ public class Dashboard extends AppCompatActivity
     Retrofit.Builder builder=new Retrofit.Builder().baseUrl(Constants.BASE_URL).client(client).addConverterFactory(GsonConverterFactory.create(gson));
     Retrofit retrofit=builder.build();
     RetrofitInterface retrofitInterface=retrofit.create(RetrofitInterface.class);
-        Intent intent;
+    Intent intent;
+
+    SessionManagement session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +56,10 @@ public class Dashboard extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        intent =getIntent();
+        session = new SessionManagement(getApplicationContext());
 
+        intent =getIntent();
+        result = intent.getParcelableExtra("result");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,6 +87,7 @@ public class Dashboard extends AppCompatActivity
             @Override
             public void onClick(View v) {
               Intent i =new Intent(Dashboard.this,BookAnAppointment.class);
+              i.putExtra("result",result);
               finish();
               startActivity(i);
             }
@@ -185,6 +194,22 @@ public class Dashboard extends AppCompatActivity
                 }
             });
 
+        }
+        else if ( id == R.id.logout){
+            new AlertDialog.Builder(this)
+                    .setTitle("Log Out")
+                    .setMessage("Are you sure you want to Logout?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            session.logoutUser();
+
+                        }
+
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

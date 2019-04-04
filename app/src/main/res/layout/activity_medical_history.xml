@@ -6,14 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+
+
+    <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/design_default_color_primary_dark"
-        app:titleTextColor="#fff"
-        app:title="Medical History"
-
-        tools:ignore="MissingConstraints" />
-
+        android:layout_height="match_parent"
+        android:id="@+id/apptHist"
+        android:scrollbars="vertical"/>
 </LinearLayout>
