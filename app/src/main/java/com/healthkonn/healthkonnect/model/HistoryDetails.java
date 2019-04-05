@@ -1,5 +1,8 @@
 package com.healthkonn.healthkonnect.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 public class HistoryDetails {
     String date,status,name;
 
@@ -32,4 +35,6 @@ public class HistoryDetails {
     public void setName(String name) {
         this.name = name;
     }
+
+
 }

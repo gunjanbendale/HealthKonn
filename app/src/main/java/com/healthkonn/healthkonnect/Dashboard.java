@@ -20,13 +20,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.healthkonn.healthkonnect.model.History;
+import com.healthkonn.healthkonnect.model.HistoryDetails;
 import com.healthkonn.healthkonnect.model.Result;
 import com.healthkonn.healthkonnect.model.User;
 import com.healthkonn.healthkonnect.network.RetrofitInterface;
 import com.healthkonn.healthkonnect.utils.Constants;
 import com.healthkonn.healthkonnect.utils.SessionManagement;
+
+import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
@@ -38,9 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Dashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Result result;
-    Context context;
     Gson gson = new GsonBuilder().setLenient().create();
-
     OkHttpClient client = new OkHttpClient();
     Retrofit.Builder builder=new Retrofit.Builder().baseUrl(Constants.BASE_URL).client(client).addConverterFactory(GsonConverterFactory.create(gson));
     Retrofit retrofit=builder.build();
@@ -58,6 +61,8 @@ public class Dashboard extends AppCompatActivity
 
         session = new SessionManagement(getApplicationContext());
 
+        String refreshedToken = FirebaseInstanceId.getInstance().getToken();
+        Log.e("Dashboard", "onCreate: Firebase Token"+refreshedToken);
         intent =getIntent();
         result = intent.getParcelableExtra("result");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -79,7 +84,7 @@ public class Dashboard extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         CardView book_appt = (CardView) findViewById(R.id.bookappt);
-        CardView medic_history = (CardView) findViewById(R.id.medihist);
+        final CardView medic_history = (CardView) findViewById(R.id.medihist);
         CardView bloodbanksearch = (CardView) findViewById(R.id.bbs);
         CardView donateblood = (CardView) findViewById(R.id.donablood);
 
@@ -96,6 +101,8 @@ public class Dashboard extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent i =new Intent(Dashboard.this,MedicalHistory.class);
+                String _id = intent.getStringExtra("id");
+                i.putExtra("result",result);
                 finish();
                 startActivity(i);
             }
@@ -215,4 +222,5 @@ public class Dashboard extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 }

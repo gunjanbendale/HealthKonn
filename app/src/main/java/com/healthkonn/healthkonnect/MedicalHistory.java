@@ -1,17 +1,34 @@
 package com.healthkonn.healthkonnect;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.healthkonn.healthkonnect.model.History;
 import com.healthkonn.healthkonnect.model.HistoryDetails;
 import com.healthkonn.healthkonnect.model.Result;
+import com.healthkonn.healthkonnect.network.RetrofitInterface;
+import com.healthkonn.healthkonnect.utils.Constants;
 
 import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MedicalHistory extends AppCompatActivity {
 
@@ -19,7 +36,16 @@ public class MedicalHistory extends AppCompatActivity {
     Result result;
     RecyclerView recyclerView;
     DataAdapter adapter;
-    private ArrayList<HistoryDetails> historyDetails;
+    Gson gson = new GsonBuilder().setLenient().create();
+    OkHttpClient client = new OkHttpClient();
+    Retrofit.Builder builder=new Retrofit.Builder().baseUrl(Constants.BASE_URL).client(client).addConverterFactory(GsonConverterFactory.create(gson));
+    Retrofit retrofit=builder.build();
+    RetrofitInterface retrofitInterface=retrofit.create(RetrofitInterface.class);
+    ProgressDialog progressDialog;
+
+
+
+    private History historyDetails;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,11 +53,33 @@ public class MedicalHistory extends AppCompatActivity {
 
         intent=getIntent();
         result = intent.getParcelableExtra("result");
+        String _id = result.getId();
+        progressDialog=new ProgressDialog(this);
+        progressDialog.setMessage("Loading");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+        Call<History> call=retrofitInterface.appthistory(_id);
+        call.enqueue(new Callback<History>() {
+            @Override
+            public void onResponse(Call<History> call, Response<History> response) {
+                historyDetails=response.body();
+                Log.e("TAG", "response 33: "+new Gson().toJson(response.body()));
+                Log.e("TAG", "response 33: "+new Gson().toJson(response.body()));
+                adapter= new DataAdapter(MedicalHistory.this,historyDetails);
+                recyclerView=(RecyclerView) findViewById(R.id.apptHist);
 
-        adapter= new DataAdapter(getApplicationContext(),historyDetails);
-        recyclerView=(RecyclerView) findViewById(R.id.apptHist);
-        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        recyclerView.setAdapter(adapter);
+                recyclerView.setLayoutManager(new GridLayoutManager(MedicalHistory.this,1));
+                recyclerView.setAdapter(adapter);
+                progressDialog.cancel();
+
+            }
+
+            @Override
+            public void onFailure(Call<History> call, Throwable t) {
+                Toast.makeText(MedicalHistory.this,t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -65,21 +113,7 @@ public class MedicalHistory extends AppCompatActivity {
     }
 
 
-    public ArrayList<HistoryDetails> filldatas(String S){
-        ArrayList<HistoryDetails> data = new ArrayList<>();
-       // String s=S.toLowerCase();
-       // int sa=getResources().getIdentifier(s,"array",getPackageName());
-       // String[] array=getResources().getStringArray(sa);
 
-       // int i=0;
-        //while(i<array.length){
-         //   String x=S.toLowerCase()+i;
-           // String r="https://drive.google.com/open?id=1CbhQ7PHAh5DBl_iQ394uMmFbO8dpjGsP/" + S.toLowerCase() + i + ".png";
-           // data.add(new HistoryDetails(array[i],r));
-          //  i++;
-       // }
-        return data;
-    }
 
 
 

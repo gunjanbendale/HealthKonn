@@ -28,6 +28,7 @@ public class BloodBankSearch extends AppCompatActivity {
 
     EditText bloodgrp,city,area;
     Result result;
+    Intent intent;
 
     private static Retrofit.Builder builder=new Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(GsonConverterFactory.create());
     public static Retrofit retrofit=builder.build();
@@ -36,10 +37,11 @@ public class BloodBankSearch extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blood_bank_search);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        intent=getIntent();
         bloodgrp = (EditText) findViewById(R.id.bloodgrp);
         city = (EditText) findViewById(R.id.city);
         area = (EditText) findViewById(R.id.area);
-        result = null;
+        result = intent.getParcelableExtra("result");
         Button submit = (Button) findViewById(R.id.submit);
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -73,28 +75,13 @@ public class BloodBankSearch extends AppCompatActivity {
     }
 
     private void submitdata(String bgrp,String ct,String area){
-        RetrofitInterface retrofitInterface = retrofit.create(RetrofitInterface.class);
-        Map<String,String> map = new HashMap<>();
-        map.put("bgrp",bgrp);
-        map.put("city",ct);
-        map.put("area",area);
-        Call<Result> call=retrofitInterface.searchbank(map);
-
-        call.enqueue(new Callback<Result>() {
-            @Override
-            public void onResponse(Call<Result> call, Response<Result> response) {
-                result=response.body();
-                Toast.makeText(BloodBankSearch.this,new Gson().toJson(result.getMessage()),Toast.LENGTH_LONG).show();
-                finish();
-                startActivity(new Intent(BloodBankSearch.this,Dashboard.class));
-                Toast.makeText(BloodBankSearch.this,"Enter mob and password",Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onFailure(Call<Result> call, Throwable t) {
-                Toast.makeText(BloodBankSearch.this,t.getMessage(),Toast.LENGTH_LONG).show();
-            }
-        });
+       Intent intent = new Intent(BloodBankSearch.this,BloodBankResults.class);
+       intent.putExtra("bgrp",bgrp);
+       intent.putExtra("ct",ct);
+       intent.putExtra("area",area);
+       intent.putExtra("result",result);
+       finish();
+       startActivity(intent);
 
     }
 

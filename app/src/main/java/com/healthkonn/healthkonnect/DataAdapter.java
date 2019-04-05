@@ -10,17 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.healthkonn.healthkonnect.model.History;
 import com.healthkonn.healthkonnect.model.HistoryDetails;
 
 import java.util.ArrayList;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
-    private ArrayList<HistoryDetails> historyDetails;
+    private History historyDetails;
     private Context context;
 
-    public DataAdapter(Context context,ArrayList<HistoryDetails> machineTypes) {
+    public DataAdapter(Context context,History history) {
         this.context = context;
-        this.historyDetails=machineTypes;
+        this.historyDetails=history;
 
     }
 
@@ -33,15 +34,15 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int i) {
 
-
-        viewHolder.date.setText(historyDetails.get(i).getDate());
-        viewHolder.status.setText(historyDetails.get(i).getStatus());
-        viewHolder.name.setText(historyDetails.get(i).getName());
+        ArrayList<HistoryDetails> hist = (ArrayList<HistoryDetails>) historyDetails.getOrders();
+        viewHolder.date.setText(hist.get(i).getDate());
+        viewHolder.status.setText(hist.get(i).getStatus());
+        viewHolder.name.setText(hist.get(i).getName());
     }
 
     @Override
     public int getItemCount() {
-        return historyDetails.size();
+        return historyDetails.getOrders().size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

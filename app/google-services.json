@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "909708452597",
+    "firebase_url": "https://majorproject-593cc.firebaseio.com",
+    "project_id": "majorproject-593cc",
+    "storage_bucket": "majorproject-593cc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909708452597:android:89893410e6953bf0",
+        "android_client_info": {
+          "package_name": "com.healthkonn.healthkonnect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSg34YZlw1v6-agJmhhi4_mzOj2oOziKQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "909708452597-pqf3s7i02h344s1ppep3f0fcbqs4ept2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
