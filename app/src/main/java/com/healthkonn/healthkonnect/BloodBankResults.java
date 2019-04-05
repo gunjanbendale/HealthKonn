@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -82,4 +84,36 @@ public class BloodBankResults extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                Intent intent1 =new Intent(this,Dashboard.class);
+                intent1.putExtra("result",result);
+                startActivity(intent1);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK
+                && event.getRepeatCount() == 0) {
+            moveTaskToBack(true);
+            Intent intent2 =new Intent(BloodBankResults.this,Dashboard.class);
+            finish();
+            startActivity(intent2);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent3= new Intent(this,Dashboard.class);
+        finish();
+        startActivity(intent3);
+    }
+
 }
